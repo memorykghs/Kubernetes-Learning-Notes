@@ -33,8 +33,6 @@ Kubernetes API 服務器驗證和配置 api 對象的數據，包括 pods、serv
 #### Scheduler
 調度決策資源的主要實施者。scheduler 掌握當前集群的使用情況，當有新的應用請求發布到 k8s 集群上，scheduler 決定這些相應的 Pods 應該要被分配到那些空閒的 Nodes 上。
 
----
-
 ## Worker Node
 Worker Node 是 k8s 集群資源的提供者，一個 Worker Node 中會包含 3 個部分：
 * [kubelet](https://kubernetes.io/zh/docs/reference/command-line-tools-reference/kubelet/)

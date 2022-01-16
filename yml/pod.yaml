@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ngapp
+  labels:
+    app: webserver
+spec:
+  containers:
+  - name: ngapp
+    image: bonexd/docker-demo:ngapp
+    ports:
+    - containerPort: 8080
