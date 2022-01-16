@@ -48,7 +48,7 @@ Worker Node 是 k8s 集群資源的提供者，一個 Worker Node 中會包含 3
 節點上容器資源的管理者，如果用的是 Docker，那麼 container runtime 就是 docker engine。kubelet 並不會直接去管理節點上的容器，而是委託給 conatiner runtime 管理，如啟動或關閉容器。
 
 #### kube-proxy
-管理 k8s 中服務 ( service ) 網絡的組件。Pod 在 k8s 網路中其實是 **不固定的 ( ephemeral )** 的，像是 Pod 的 IP 可能會改變。為了管理這些 Pod 的 IP 可能的變化，k8s 引入了 service 的概念。
+管理 k8s 中服務 ( service ) 網絡的組件。Pod 在 k8s 網路中其實是 **不固定的 ( ephemeral )** 的，像是 Pod 的 IP 可能會改變。為了管理這些 Pod 的 IP 可能的變化，k8s 引入了 service 的概念，是實現 service 抽象機制的概念。
 
 service 可以屏蔽 Pod 的 IP，並在調用的時候進行負載均衡。而如果要將 service 管理的 port 暴露給外部使用，也需要透過 kube-proxy 進行轉發代理。
 

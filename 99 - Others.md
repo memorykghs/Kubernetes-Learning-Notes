@@ -8,4 +8,4 @@
 * https://learningsky.io/install-ubuntu-on-oracle-virtualbox/
 
 ## 資源
-* [virtualbox])(https://www.virtualbox.org/wiki/Downloads)
+* [virtualbox](https://www.virtualbox.org/wiki/Downloads)
