@@ -36,5 +36,9 @@
 
 ## 問題
 1. 佈 pod 上去怎麼知道佈在哪個 node 上?
+```
+kubectl describe <pod_name>
+```
+
 2. Service Type v.s. 外部溝通的三個方法(nodePort、Cluster IP、Load Balance)???
-3. Cluster 怎麼停止@@?
+3. Cluster 怎麼停止@@? 用 Kind 指令停

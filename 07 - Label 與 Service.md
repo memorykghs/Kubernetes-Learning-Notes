@@ -1,4 +1,4 @@
-# 05 - Lable 與 Service
+# 07 - Lable 與 Service
 
 ## Lable 是什麼?
 Pod 本身會帶著許多不同標籤 ( Label ) 來辨別其實際用途，使用者可以透過賦予一組唯一的標籤組合
@@ -6,17 +6,17 @@ Pod 本身會帶著許多不同標籤 ( Label ) 來辨別其實際用途，使�
 ## Service 是什麼?
 Service 可以想像成是**通往 pod 的通道**，在 k8s 中，由於 pods 數量是不固定的 ( 動態的 )，每當有新的 Pod 被新建或是刪除，IP 都會跟著改變，想要使用在上面的服務，每次都需要去動態的改 IP。
 
-Service 的存在可以解決這個問題，我們只要把 request 送至 Service，它就會自動忙做附載平衡 ( load-balance ) 並將 request 送到 Pod 當中。
-
-在 Service 中有 3 個不同的 port，**NodePort**、**Port** 及 **TargetPort**，分別對應不同的 IP：**External IP**、**Cluster IP** 與 **Pod IP**。
+Service 的存在可以解決這個問題，我們只要把 request 送至 Service，它就會自動忙做負載平衡 ( load-balance ) 並將 request 送到 Pod 當中。
 
 ![](/images/5-1.png)
 
-#### NodePort
-顧名思義，就是在 node 節點上，開了一個 port，可以想像成是**通往 pod 的通道**。`NodePort` 是**節點外部流量**的關鍵入口，可以由外部存取到某個 Service，是最基礎的 Service。
-```
-nodeIP:nodePort
-```
+Service 有 4 種類型：
+1. Cluster IP
+2. NodePort
+3. LoadBalancer
+4. ExternalName
+
+接下來我們將陸續提到 Service 相關的名詞與概念。
 
 #### port
 是暴露在 Cluster IP 上的埠，提供 cluster 內部客戶端訪問 Service 的入口。
@@ -37,6 +37,12 @@ spec:
     targetPort: 3306
   selector:
     name: mysql-pod
+```
+
+#### NodePort
+顧名思義，就是在 node 節點上，開了一個 port，可以想像成是**通往 pod 的通道**。`NodePort` 是**節點外部流量**的關鍵入口，可以由外部存取到某個 Service，是最基礎的 Service。
+```
+nodeIP:nodePort
 ```
 
 #### targetPort
@@ -82,7 +88,32 @@ Cluster IP 為虛擬靜態 IP，當 cluster 物件被產生時，會一併產生
 #### Pod IP
 每個 Pod 都有的獨立的網路位址，只有 cluster 內可以存取。對應到 Service 上的 TargetPort。
 
-LoadBalancer：就是接入外部流量
+## 建立 Service
+Service 也可以透過 yaml 檔或是 json 格式的檔案定義並建立，例如下面定義了一個 nginx 服務，將服務的 80 port 轉發到 default namespace 中帶有 run=nginx 標籤的 Pod 上，該 Pod 的 port 也是 80。
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: nginx
+  sessionAffinity: None
+  type: ClusterIP
+```
+
+## Kubernetes Service NodePort yaml 範例
+* 參考網址：[Service Types in Kubernetes?](https://medium.com/avmconsulting-blog/service-types-in-kubernetes-24a1587677d6)
+
+![](/images/5-2.png)
 
 ## 參考
 

@@ -1,4 +1,4 @@
-# 10 - Ingress
+# 13 - Ingress
 
 ## 參考
 * [kind 官網 Ingress docs](https://kind.sigs.k8s.io/docs/user/ingress/)

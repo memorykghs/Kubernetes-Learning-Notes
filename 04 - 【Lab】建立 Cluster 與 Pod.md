@@ -1,4 +1,4 @@
-# 04 - 【Lab】建立 Cluster
+# 04 - 【Lab】建立 Cluster 與 Pod
 使用 kind 簡單 run 依次過程，首先建立 cluster。
 
 ## Create a Cluster
