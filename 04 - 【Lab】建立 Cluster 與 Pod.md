@@ -25,10 +25,10 @@ nodes:
 
 建立好的檔案可以隨便放在任何一個資料夾，不過就需要指定檔案路徑與名稱。
 ```docker
---name test-cluster --config <path/file-name.yaml>
+kind create --name test-cluster --config <path/file-name.yaml>
 
 # ex
---name test-cluster --config C:\Users\user\Desktop\筆記\Kubernetes-Learning-Notes\yml\kind.yaml
+kind create --name test-cluster --config C:\Users\user\Desktop\筆記\Kubernetes-Learning-Notes\yml\kind.yaml
 ```
 
 執行上述指令後，可以打開 docker desktop，可以看到有 3 個 node 正在運行。

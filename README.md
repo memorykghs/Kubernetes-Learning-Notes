@@ -1,12 +1,15 @@
 # Kubernetes-Learning-Notes
 
+## Kubernetes 官網
+* https://kubernetes.io/docs/concepts/
+
 ## 參考系列文章
 * [Kubernetes 指南](https://feisky.gitbooks.io/kubernetes/content/introduction/)
 * [Kubernetes 30天學習筆記](https://ithelp.ithome.com.tw/users/20103753/ironman/1590)
 
 * [Kubernetes Handbook——Kubernetes 中文指南](https://jimmysong.io/kubernetes-handbook/)
 
-#### 
+#### 有的沒的
 * [邊車模式 Sidecar Pattern](https://tachingchen.com/tw/blog/desigining-distributed-systems-the-sidecar-pattern-concept/)
 
 #### 其他補充
