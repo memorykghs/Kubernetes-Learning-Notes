@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: kubernetes-demo-pod
+  name: little-whale
   labels:
-    app: demo
+    app: little-whale
 spec:
   containers:
   - name: demo

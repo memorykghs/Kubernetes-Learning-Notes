@@ -8,10 +8,10 @@
 ```docker
 kind create --name test-cluster
 ```
-![](/images/4-1.png)
+![](/images/lab-1-1.png)
 
 #### 依照 yaml 建立 cluster
-先創建一個 yaml 檔 [`kind.yaml`]()，內容如下：
+先創建一個 yaml 檔 [kind.yaml](https://github.com/memorykghs/Kubernetes-Learning-Notes/blob/main/yml/kind.yaml)，內容如下：
 ```yml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -33,7 +33,7 @@ kind create --name test-cluster --config C:\Users\user\Desktop\筆記\Kubernetes
 
 執行上述指令後，可以打開 docker desktop，可以看到有 3 個 node 正在運行。
 
-![](/images/4-5.png)
+![](/images/lab-1-5.png)
 <br/>
 
 或是下 `kubectl` 指令也可以看到 node 的數量與狀態。
@@ -41,17 +41,17 @@ kind create --name test-cluster --config C:\Users\user\Desktop\筆記\Kubernetes
 kubectl get node
 ```
 
-![](/images/4-8.png)
+![](/images/lab-1-8.png)
 
 ## 查看所有已建立的 Cluster
 ```docker
 kind get clusters
 ```
-![](/images/4-2.png)
+![](/images/lab-1-2.png)
 <br/>
 
 ## 建立 Pod
-接著一樣使用 [`pod.yaml`]() 建立 Pod，檔案內容如下：
+接著一樣使用 [pod.yaml](https://github.com/memorykghs/Kubernetes-Learning-Notes/blob/main/yml/pod.yaml) 建立 Pod，檔案內容如下：
 ```yml
 apiVersion: v1
 kind: Pod
@@ -71,7 +71,7 @@ spec:
 ```docker
 kubectl apply -f C:\Users\user\Desktop\筆記\Kubernetes-Learning-Notes\yml\pod.yaml
 ```
-![](/images/4-6.png)
+![](/images/lab-1-6.png)
 <br/>
 
 ## 查看 Pods
@@ -79,7 +79,7 @@ kubectl apply -f C:\Users\user\Desktop\筆記\Kubernetes-Learning-Notes\yml\pod.
 ```docker
 kubectl get pods
 ```
-![](/images/4-7.png)
+![](/images/lab-1-7.png)
 <br/>
 
 ## 刪除 Cluster
@@ -92,10 +92,10 @@ kind delete cluster
   kind delete cluster --name <cluster-name>
   ```
   錯誤示範XD：
-  ![](/images/4-3.png)
+  ![](/images/lab-1-3.png)
   
   正確指令：
-  ![](/images/4-4.png)
+  ![](/images/lab-1-4.png)
 <br/>
 
 https://blog.tienyulin.com/kubernetes-pod/
