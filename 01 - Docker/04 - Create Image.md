@@ -75,30 +75,46 @@ docker build -t redis . --no-cache
 ## 上傳映像檔
 使用者可以通過 docker push 命令，把自己建立的映像檔上傳到倉庫中來共享。例如，使用者在 Docker Hub 上完成註冊後，可以推送自己的映像檔到倉庫中。
 
-先登入
+不過在推送 Image 之前，要先產生 token 進行登入，可以參考 [04.1 - Manage Access Token]()。
+
+剛剛建立的 Image 沒有 Tag，無法上傳，所以要先將 Image 打上 Tag。注意這邊的 Image Name 要跟要上傳的目的 Repo 名稱一樣，才有辦法上傳到指定位置。
 ```docker
-docker login -u memorykghs
+# docker image tag ${image_id} ${image_name}:${tag_name}
+docker image tag 5cb8cb0107c0 memorykghs/docker-playground:my-redis
 ```
 
-還有因為我們剛剛建立的 Image 沒有 Tag，無法上傳，所以要先將 Image 打上 Tag。
-```docker
-# docker tag ${Image Name} DockerHub帳號/Image Name
-docker tag redis memorykghs/docker-playground
-```
+![](/images/docker/4-6.png)
 
 ```docker
-docker push memorykghs/docker-playground
+# docker push ${user_name}/${repo_name}:${tag_name}
+docker push memorykghs/docker-playground:my-redis
 ```
-p.s. Docker Hub 上的 Repository 都必須是小寫，不能出現大寫，但可以包含一些特殊符號
+p.s. Docker Hub 上的 Repository 都必須是小寫，不能出現大寫，但可以包含一些特殊符號。
+
+![](/images/docker/4-7.png)
+
+上傳成功後到自己的 Docker Hub 上面看就會出現啦~
+
+![](/images/docker/4-8.png)
 
 ## 刪除 Image
 ```docker
-# docker rmi ${image_name}
+# docker rmi ${image_name} ${image_id}
 docker rmi memorykghs/docker-playground
+
+# docker rmi ${image_id}
+docker rmi 5cb8cb0107c0
 ```
-* `rmi` - 代表要 `rm` 的是 Image
+`rmi` 代表要 `rm` 的是 Image。如果是 `rm`，那麼移除的會是容器。
+
+![](/images/docker/4-7.png)
 
 ## 參考
 * [菜鳥教程 - Docker run 命令](https://www.runoob.com/docker/docker-run-command.html)
 * https://blog.csdn.net/dongdong9223/article/details/52998375
 * https://ithelp.ithome.com.tw/articles/10191016?sc=hot
+* https://joshhu.gitbooks.io/dockercommands/content/DockerImages/CommandArgs.html
+
+#### Tag
+* https://itnext.io/docker-tips-about-none-images-39fb34b20bc5
+* https://stackoverflow.com/questions/41984399/denied-requested-access-to-the-resource-is-denied-docker
