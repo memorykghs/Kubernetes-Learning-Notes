@@ -1,5 +1,8 @@
 # Kubernetes-Learning-Notes
 
+## Container Design Pattern
+* https://techbeacon.com/enterprise-it/7-container-design-patterns-you-need-know
+
 ## Docker
 * [Docker--從入門到實踐](https://www.aurotek.com.tw/uploads/files/hello.pdf)
 * [Docker 指令小抄](https://mileslin.github.io/2019/04/Docker-%E6%8C%87%E4%BB%A4%E5%B0%8F%E6%8A%84/)

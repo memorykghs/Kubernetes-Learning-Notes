@@ -42,18 +42,28 @@ Dockerfile 中第一條指令必須為 `FROM` 指令，如果要在同一個 Doc
 * 告訴 Docker 使用哪個映像檔作為基底，上面的例子後面接著是維護者的信息。
 
 #### MAINTAINTER
-格式：`MAINTAINER <name>`，指定維護者訊息。
+* 格式：`MAINTAINER <name>`，指定維護者訊息。
+
+#### LABEL
+設定映像檔的 Metadata 資訊，有許多種的 `<key>` 可選用，可以在這邊寫入較多關於此 Dockerfile 的資訊。
+* 格式：`LABEL [<key>=value]`
 
 #### RUN
 每條 RUN 指令將在當前映像檔基底上執行指定命令，並產生新的映像檔。
 * 格式：`RUN <command>` 或 `RUN ["executable", "param1", "param2"]`。
+<br/>
 
   * `RUN <command>`：在 shell 終端中運行命令，即 `/bin/sh -c`
   * `RUN ["executable", "param1", "param2"]`：使用 exec 執行。
+  <br/>
   
-  指定使用其它終端可以透過第二種方式實作，例如 `RUN ["/bin/bash", "-c", "echo hello"]`。
+* 指定使用其它終端可以透過第二種方式實作，例如 `RUN ["/bin/bash", "-c", "echo hello"]`。
+* 當命令較長時可以使用 `\` 來換行。
+* 使用 `&&` 串聯多個 `RUN` 指令，因為每個指令都會建立一層 Layer，使用 `&&` 語法串聯可以避免新增過多層的 Layer。
 
-當命令較長時可以使用 `\` 來換行。
+在 `build image` 時，可以使用一般常見的 shell 指令和 exec 指令，詳細可以參考官網的 [RUN 解說](https://docs.docker.com/engine/reference/builder/#run)。
+
+> 簡單來說 EXEC 的指令下法可以避免一些預設的 shell 指令，而選擇想要的 shell 指令進行操作，此外還須注意 EXEC 執行的程式碼，必須使用 雙引號 的格式框住指令。
 
 #### CMD
 指定啟動容器時執行的命令，每個 Dockerfile 只能有一條 CMD 命令。如果指定了多條命令，只有最後一條會被執行。而使用者啟動容器時候指定了運行的命令，則會覆蓋掉 CMD 指定的命令。
@@ -64,3 +74,16 @@ Dockerfile 中第一條指令必須為 `FROM` 指令，如果要在同一個 Doc
 3. `CMD ["param1","param2"]`：提供給 `ENTRYPOINT` 的預設參數
 
 完成 Dockerfile 後可以使用 `docker build` 建立映像檔。
+
+## Build Image
+```docker
+docker build ${dockerfile_name}
+docker build -t ${image_name:TAG}
+docker build -f ${path} -t ${image_name:TAG}
+```
+* `-t` - 用來寫入 Image Name 和 TAG
+* `-f` - 指定 Image 建置完成後放置的位置
+
+## 參考
+* https://hackmd.io/FriZ-QVpQd6FC7OrzMsZzw
+* https://www.aurotek.com.tw/uploads/files/hello.pdf
