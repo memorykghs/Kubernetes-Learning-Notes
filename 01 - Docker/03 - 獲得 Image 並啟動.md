@@ -1,4 +1,31 @@
 # 03 - 取得映像檔
+## 獲得映像檔並啟動
+如果沒有映像檔，Docker Hub 上有一個 hello-world image 可以使用，先把這個 Image pull 下來。
+```docker 
+docker pull hello-world
+```
+
+使用下載的映像檔啟動容器。
+
+```docker
+docker run -t -i redis /bin/bash
+```
+
+* `-i` - 以交互模式運行容器，通常和 `-t` 一起使用。
+  > flag allows you to make an interactive connection by grabbing the standard in (STDIN) of the container.
+
+
+* `-t` - 為容器重新分配一個偽輸入中端，簡而言之就是進入容器的終端，通常與 `-i` 一起使用。
+  > flag assigns a pseudo-tty or terminal inside the new container.
+
+* `-d` - 背景執行
+
+* `/bin/bash` - 在 Container 中啟動一個 bash shell
+  > launches a Bash shell inside our container
+
+![](/images/docker/4-1.png)
+
+按 `Ctrl + C` 可以退出。
 ## 取得映像檔
 ```docker
 docker pull nginx

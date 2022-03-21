@@ -5,12 +5,35 @@ Docker 利用容器來執行應用。容器是從映像檔建立的執行實例�
 
 * 映像檔是唯讀的，容器在啟動的時候建立一層可寫層作為最上層。
 
+## 列出映像檔
+這個只會列出正在運行中的 Container。
+```docker
+docker container ls
+```
+![](/images/docker/6-1.png)
+
+這個則是列出當前所有的 Container，不論狀態。
+```docker
+docker container ls -a
+```
+![](/images/docker/6-2.png)
+
 ## 啟動容器
 啟動容器有兩種方式：
 1. 一種是將映像檔新建一個容器並啟動
 2. 另一種是將終止狀態 ( stopped ) 的容器重新啟動
 
 #### 新建並啟動容器
+```docker
+docker run java-app
+```
+![](/images/docker/6-3.png)
+
+這時候下 `docker container ls` 會發現是空的，要下 `docker contaienr ls -a` 才會看到，而且該 Container 已經退出 ( exited )，因為內容已經執行完畢了。
+
+![](/images/docker/6-4.png)
+
+而下面這個指令，可以在 Container 與 Docker Terminal 中交互下指令。
 ```docker
 docker run -t -i ubuntu:14.04 /bin/bash root@af8bae53bdd3:/#
 ```
@@ -35,12 +58,14 @@ srv sys tmp usr var
 * 執行使用者指定的應用程式
 * 執行完畢後容器被終止
 
+要退出容器的話，輸入 `exit` 即可。
+
 #### 啟動已終止容器
 使用 `docker start` 來啟動。容器的核心為所執行的應用程式，所需要的資源都是應用程式執行所必需的。可以在虛擬終端中利用 `ps` 或 `top` 來查看程式訊息。
 
 如果容器原本就是啟動狀態的，`docker start` 會先終止容器在重新啟動它。
 
-![](/images/docker/6-1.png)
+![](/images/docker/6-5.png)
 
 可以發現容器中僅執行了指定的 bash 應用。這種特點使得 Docker 對資源的使用率極高，是貨真價實的輕量級虛擬化。
 
@@ -51,100 +76,12 @@ docker run -d redis
 3e5da2a074ee8a0190720fda67bb9b0258ab710ea722300351ffd884175f5217
 ```
 
-![](/images/docker/6-2.png)
+![](/images/docker/6-6.png)
 
 容器啟動後會返回一個唯一的 id，也可以透過 `docker ps` 命令來查看容器訊息。
 
-![](/images/docker/6-3.png)
+![](/images/docker/6-7.png)
 
-## 進入容器
-在使用 `-d` 參數時，容器啟動後會進入後臺。 某些時候需要進入容器進行操作，有很多種方法，包括使用 `docker attach` 命令或 `nsenter` 工具等。
-
-以下列出幾個比較常用的參數：
-* `--add-host` - 增加一個host對應IP的設定
-* `-d` - 會在背景執行 Container，並秀出 Container ID
-* `-p` - 指定與主機關聯的 port，e.g. `-p 8080:8080`
-* `-P` - 開啟所有 Image 設定的 port
-* `--rm` - 當有來自相同 Image 的 Container，會刪除既存在的 ( 舊的 )，執行新的
-
-#### exec 命令
-docker exec 是Docker內建的命令，這兩個指令皆可以進入 Container。
-```docker
-docker exec -it ${container_id} /bin/bash
-docker exec -it ${container_id} /bash
-```
-
-下面示範如何使用該命令。
-```docker
-docker run -idt ubuntu
-243c32535da7d142fb0e6df616a3c3ada0b8ab417937c853a9e1c251f499f550
-
-docker ps
-CONTAINER ID IMAGE COMMAND CREA
-TED STATUS PORTS NAMES
-243c32535da7 ubuntu:latest "/bin/bash" 18 s
-econds ago Up 17 seconds nostalgi
-c_hypatia
-
-docker exec -ti nostalgic_hypatia bash
-root@243c32535da7:/#
-```
-
-#### attach 命令
-docker attach 亦是Docker內建的命令。下面示例如何使用該命令。
-```docker
-docker run -idt ubuntu
-243c32535da7d142fb0e6df616a3c3ada0b8ab417937c853a9e1c251f499f550
-
-docker ps
-CONTAINER ID IMAGE COMMAND CREA
-TED STATUS PORTS NAMES
-243c32535da7 ubuntu:latest "/bin/bash" 18 s
-econds ago Up 17 seconds nostalgi
-c_hypatia
-
-docker attach nostalgic_hypatia
-root@243c32535da7:/#
-```
-
-當多個窗口同時 `attach` 到同一個容器的時候，所有窗口都會同步顯示。當某個窗口因命令阻塞時，其他窗口也無法執行操作。
-
-## 查看 Container IP
-此指令必須進入到 Container 中。
-```docker
-cat etc/hosts
-```
-
-Docker Container 的 default IP 是 172.17.0.2。但如果是使用 Window 運行的 Container，從本機端連線的話，要使用 Docker Machine 的 IP 位置去連。
-
-#### 查看 Docker Machine IP
-查詢目前 Docker Machine 使用哪一個虛擬 IP。
-```docker 
-docker-machine ip
-```
-
-## 取得容器輸出訊息
-```docker
-# docker logs ${container_id}
-docker logs 3e5da2a074ee
-```
-![](/images/docker/6-4.png)
-
-## 終止容器
-可以使用 `docker stop` 來中止執行中的容器。另外，當 Docker 容器中指定的應用終結時，容器也自動終止。例如向上面的指令 `docker run -t -i redis`，沒有加上 `-d` 的話，可以透過 `exit` 或是 Ctrl + d 來退出終端，建立的容器也會立刻中止。
-
-使用 `docker ps -a` 也可以查看所以終止的容器。
-```docker
-# docker stop ${container_id}
-docker stop 3e5da2a074ee
-
-# 查看終止狀態的容器
-docker ps -a
-```
-
-![](/images/docker/6-5.png)
-
-處於終止狀態的容器可以透過 `docker start` 來重新啟動。
 
 ## 刪除容器
 可以使用 `docker rm` 來刪除一個處於終止狀態的容器。
@@ -155,11 +92,52 @@ docker rm 3e5da2a074ee
 
 如果要刪除執行中的容器，可以使用 `-f` 參數，Docker 會發送 `SIGKILL` 信號給容器。
 
+## 其他
+輸入 `docker` 指令可以看到 Docker 的相關指令說明，其中可以分成兩大部分：
+1. Management Commands
+2. Commands
+
+![](/images/docker/6-8.png)
+
+而簡寫的部分，例如列出 Container，下面兩個指令是等價的。
+```docker
+docker container ls
+docker ps
+
+docker container ls -a
+docker ps -a
+```
+
+刪除 Container 的部分也是一樣，可以直接用 `rm` 直接執行。
+```docker
+docker image rm ${image_id}
+docker rmi ${image_id}
+
+docker container rm ${container_id}
+docker rm ${container_id}
+```
+
+在刪除的部分，想要一次刪除所有 Container 可以這樣做：
+1. 先找出所有 Container ID
+  ```docker 
+  docker container ls -aq
+  ```
+  ![](/images/docker/6-9.png)
+
+2. 刪除所有 Container
+```docker
+docker rm $(docker container ls -aq)
+```
+
+若是只需要刪除停止的 Container，則可以先下一個 filter 再刪除：
+```docker 
+docker container ls -f "status=exited"
+```
+
 ## 小結
 * 啟動新建容器：`docker run ${image_name}`
 * 啟動已終止容器：`docker start ${container_id}`
 * 列出所有終止狀態的 Container：`docker ps -a`
-* 查看 Container 的 Log：`docker logs ${container_id}`
 * 刪除容器：`docker rm ${container_id}`
 * 刪除執行中容器：`docker rm -f ${container_id}`
 
