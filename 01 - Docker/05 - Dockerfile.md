@@ -39,14 +39,27 @@ CMD /usr/sbin/nginx
 #### FROM
 Dockerfile 中第一條指令必須為 `FROM` 指令，如果要在同一個 Dockerfile 中建立多個映像檔時，可以使用多個 `FROM` 指令 ( 每個映像檔一次 )。
 * 格式：`FROM <image>` 或 `FROM <image>:<tag>`。
-* 告訴 Docker 使用哪個映像檔作為基底，上面的例子後面接著是維護者的信息。
+  ```docker
+  FROM scratch # 製作 base image
+  FROM ubuntu:14.04 # 使用 base image
+  ```
+* 告訴 Docker 使用哪個映像檔作為基底。
+* 基於安全性的問題，盡量使用官方 Base Image
 
 #### MAINTAINTER
 * 格式：`MAINTAINER <name>`，指定維護者訊息。
 
 #### LABEL
 設定映像檔的 Metadata 資訊，有許多種的 `<key>` 可選用，可以在這邊寫入較多關於此 Dockerfile 的資訊。
+
 * 格式：`LABEL [<key>=value]`
+  ```docker
+  LABEL maintainer="12345@gmail.com"
+  LABEL version="1.0"
+  LABEL description="This is description"
+  ```
+
+* 通常建議寫 LABEL 幫助了解這個 Image
 
 #### RUN
 每條 RUN 指令將在當前映像檔基底上執行指定命令，並產生新的映像檔。
@@ -58,12 +71,25 @@ Dockerfile 中第一條指令必須為 `FROM` 指令，如果要在同一個 Doc
   <br/>
   
 * 指定使用其它終端可以透過第二種方式實作，例如 `RUN ["/bin/bash", "-c", "echo hello"]`。
-* 當命令較長時可以使用 `\` 來換行。
+* 當命令較長時可以使用 `\` 來換行，避免建立多層 Image。
 * 使用 `&&` 串聯多個 `RUN` 指令，因為每個指令都會建立一層 Layer，使用 `&&` 語法串聯可以避免新增過多層的 Layer。
 
 在 `build image` 時，可以使用一般常見的 shell 指令和 exec 指令，詳細可以參考官網的 [RUN 解說](https://docs.docker.com/engine/reference/builder/#run)。
 
 > 簡單來說 EXEC 的指令下法可以避免一些預設的 shell 指令，而選擇想要的 shell 指令進行操作，此外還須注意 EXEC 執行的程式碼，必須使用 雙引號 的格式框住指令。
+
+#### WORKDIR
+```docker
+# 如果沒有會自動建立該目錄
+WORKDIR /root
+
+# 多行最終結果為串接後的路徑，下面例子即為：/test/demo
+WORKDIR /test
+WORKDIR demo
+```
+
+* 使用 `RUN cd` 也可以改變目錄，但非常不建議
+* 盡量使用絕對路徑
 
 #### CMD
 指定啟動容器時執行的命令，每個 Dockerfile 只能有一條 CMD 命令。如果指定了多條命令，只有最後一條會被執行。而使用者啟動容器時候指定了運行的命令，則會覆蓋掉 CMD 指定的命令。
