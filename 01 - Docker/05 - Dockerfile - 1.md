@@ -1,4 +1,4 @@
-# 05 - Dockerfile
+# 05 - Dockerfile - 1
 當使用 Image 建立 Container 後，有時候需要進入 Docker Container 裡面下一些指令安裝程式或是修改設定檔，起多個 Container 就需要重複執行動作不少次。
 
 而 Dockerfile 內可以包含一些啟動 Container 之後要執行的指令，之後就使用 `docker build` 指令來建立 Image 即可。
@@ -91,25 +91,40 @@ WORKDIR demo
 * 使用 `RUN cd` 也可以改變目錄，但非常不建議
 * 盡量使用絕對路徑
 
-#### CMD
-指定啟動容器時執行的命令，每個 Dockerfile 只能有一條 CMD 命令。如果指定了多條命令，只有最後一條會被執行。而使用者啟動容器時候指定了運行的命令，則會覆蓋掉 CMD 指定的命令。
-
-支援三種格式：
-1. `CMD ["executable","param1","param2"]`：使用 `exec` 執行，推薦使用
-2. `CMD command param1 param2`：在 `/bin/sh` 中執行，使用在給需要互動的指令
-3. `CMD ["param1","param2"]`：提供給 `ENTRYPOINT` 的預設參數
-
-完成 Dockerfile 後可以使用 `docker build` 建立映像檔。
-
-## Build Image
+#### ADD 與 COPY
 ```docker
-docker build ${dockerfile_name}
-docker build -t ${image_name:TAG}
-docker build -f ${path} -t ${image_name:TAG}
+# 將 hello 文件加入根目錄
+ADD hello /
+
+# 將 hello 文件加入根目錄下的 test 資料夾，即 /root/test/hello
+WORKDIR root/
+ADD hello test/ 
+
+# 將檔案放到跟目錄並解壓縮
+ADD test.tar.gz /
+
+複製 hello 文件到根目錄下的 test 資料夾
+COPY hello test/
 ```
-* `-t` - 用來寫入 Image Name 和 TAG
-* `-f` - 指定 Image 建置完成後放置的位置
+
+* `ADD` 跟 `COPY` 都可以將檔案加入指定資料夾
+* `ADD` 與 `COPY` 的區別在於，`ADD` 除了可以將檔案加入指定目錄，還可以解壓縮
+* 大部分的情況 `COPY` 比 `ADD` 好
+
+## ENV
+* 格式：`ENV <key> <value>`
+* 用來設定環境常數，可以被後續的 `RUN` 指令使用，並在容器運行時保持
+
+下面的例子在執行 RUN 時同時把環境常數帶入，這樣就只需要修改 Dockerfile 的 ENV 的值就好，不需要一個一個做修改。
+```docker
+ENV MYSQL_VERSION 5.6
+RUN apt-get install -y mysql-server="${MYSQL_VERSION}" \
+    && rm -rf /var/lib/apt/lists/*
+```
 
 ## 參考
 * https://hackmd.io/FriZ-QVpQd6FC7OrzMsZzw
 * https://www.aurotek.com.tw/uploads/files/hello.pdf
+
+#### 影片
+* https://www.youtube.com/watch?v=BTUffhYLsvc&list=PLwIrqQCQ5pQkSTTzJU6ljaaaou-_Iq9N_&index=21
