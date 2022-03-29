@@ -9,6 +9,9 @@
 
 * https://hackmd.io/2G-RoB0QTrKzkftH2uLueA
 
+###### 待解決
+- [ ] ENTRYPOINT 和 CMD 差別???
+
 ## Kubernetes 官網
 * https://kubernetes.io/docs/concepts/
 

@@ -111,7 +111,7 @@ COPY hello test/
 * `ADD` 與 `COPY` 的區別在於，`ADD` 除了可以將檔案加入指定目錄，還可以解壓縮
 * 大部分的情況 `COPY` 比 `ADD` 好
 
-## ENV
+#### ENV
 * 格式：`ENV <key> <value>`
 * 用來設定環境常數，可以被後續的 `RUN` 指令使用，並在容器運行時保持
 
