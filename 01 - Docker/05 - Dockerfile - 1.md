@@ -103,13 +103,15 @@ ADD hello test/
 # 將檔案放到跟目錄並解壓縮
 ADD test.tar.gz /
 
-複製 hello 文件到根目錄下的 test 資料夾
+# 複製 hello 文件到根目錄下的 test 資料夾
+COPY ${source_path} ${target_path}
 COPY hello test/
 ```
 
 * `ADD` 跟 `COPY` 都可以將檔案加入指定資料夾
 * `ADD` 與 `COPY` 的區別在於，`ADD` 除了可以將檔案加入指定目錄，還可以解壓縮
 * 大部分的情況 `COPY` 比 `ADD` 好
+* 在使用 `COPY` 時，若是使用相對路徑要特別注意，該路徑是相對於執行 Docker 命令時所在的位置，而不是 Dockerfile所在的位置。等於目標路徑就是相對於 `WORKDIR` 所設定的當前路徑。
 
 #### ENV
 * 格式：`ENV <key> <value>`

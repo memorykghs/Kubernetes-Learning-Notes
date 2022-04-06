@@ -6,17 +6,29 @@
 * https://www.baeldung.com/spring-boot-run-maven-vs-executable-jar
 
 #### Step 2
-接下來建立 Dockerfile。
+接下來建立並編輯 Dockerfile。
+```
+touch dockerfile
+vi dockerfile
+```
+
+Dockerfile 內容如下，可以到 [open jdk 官方 Docker Hub](https://hub.docker.com/_/openjdk?tab=tags&page=5) 找適合的 jdk 版本。
 ```docker
-FROM openjdk:11-jdk-alpine
+FROM openjdk:11-jdk
 ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar # 書
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY /*.jar .
+ENTRYPOINT ["java","-jar","/helloSpringBoot-0.0.1.jar"]
 ```
 
 `ENTRYPOINT` 的指令相當於：
 ```
-java -jar target/helloSpringBoot-0.0.1-SNAPSHOT.jar
+java -jar target/helloSpringBoot-0.0.1.jar
+```
+
+#### Step 3
+將 Dockerfile build 起來。由於之後要推上 Docker Hub，所以將名稱改成 Docker Hub 上的 Repo 名稱。
+```docker
+docker build -t memorykghs/hello-spring-boot:0.0.1 .
 ```
 
 ## 參考
