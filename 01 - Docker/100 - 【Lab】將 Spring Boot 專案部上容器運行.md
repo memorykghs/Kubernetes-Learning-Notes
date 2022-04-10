@@ -29,7 +29,24 @@ java -jar target/helloSpringBoot-0.0.1.jar
 將 Dockerfile build 起來。由於之後要推上 Docker Hub，所以將名稱改成 Docker Hub 上的 Repo 名稱。
 ```docker
 docker build -t memorykghs/hello-spring-boot:0.0.1 .
+docker run -p 8080:8080 memorykghs/hello-spring-boot:0.0.1
+```
+
+最後在網頁上測試寫好的API：http://localhost:8080/test。
+
+![](/images/docker/100-1.png)
+
+p.s. 如果不小心忘記加上 `-it`，可以按 `alt + F4` 退出容器 console。
+
+## Step 4
+使用 `docker container ls` 查看容器運行狀態。
+```docker
+$ docker container ls
+CONTAINER ID   IMAGE                                COMMAND                  CREATED         STATUS         PORTS                    NAMES
+203396586b5a   memorykghs/hello-spring-boot:0.0.1   "java -jar /helloSpr…"   3 minutes ago   Up 3 minutes   0.0.0.0:8080->8080/tcp   blissful_elion
+
 ```
 
 ## 參考
+* https://matthung0807.blogspot.com/2019/02/springbootspring-bootjar.html
 * https://github.com/spring-guides/gs-spring-boot-docker#initial
