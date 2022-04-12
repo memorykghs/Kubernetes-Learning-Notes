@@ -29,7 +29,7 @@ java -jar target/helloSpringBoot-0.0.1.jar
 將 Dockerfile build 起來。由於之後要推上 Docker Hub，所以將名稱改成 Docker Hub 上的 Repo 名稱。
 ```docker
 docker build -t memorykghs/hello-spring-boot:0.0.1 .
-docker run -p 8080:8080 memorykghs/hello-spring-boot:0.0.1
+docker run -it -p 8080:8080 memorykghs/hello-spring-boot:0.0.1
 ```
 
 最後在網頁上測試寫好的API：http://localhost:8080/test。
