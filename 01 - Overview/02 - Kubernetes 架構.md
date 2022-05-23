@@ -27,6 +27,16 @@ Master Node 中有 4 個重要的角色：
 
 總之，整個 cluster 的配置與定義、各項工作的狀態資訊都是由 ETCD 負責統管的，對於 k8s Cluster 來說算是核心大腦組件，會記錄整個 k8s 的狀態的一個儲存庫，包括節點、Pods、Deployments 等資訊。
 
+* 是一個 Distributed ( 分散式 )、key-value pair 儲存模式的架構
+* 除了儲存 configuration 及 monitoring 的狀態之外，還可以進行 Service 的搜尋
+* JSON / REST API
+
+通常會放在 Cluster 中，且為單數以上 ( 1, 3, 5, 7...以此類推 )。預設會有 3 個 Node，且只允許一個 fail。
+
+![](/images/2-5.png)
+
+[圖片來源](https://access.redhat.com/products)
+
 #### Controller-manager
 維持狀態的管理者，各種資源自動化的控制中心，保證集群中的狀態一致的元件。
 
@@ -46,7 +56,13 @@ Worker Node 是 k8s 集群資源的提供者，一個 Worker Node 中會包含 3
 ![](/images/overview-2-3.png)
 
 #### kubelet
-負責監聽 apiserver 的一些事件，執行 Master Node 來的指令，例如透過 CRI 抓取 image 並建立 Pod、或是關閉 port 等，也會將此節點的狀態數據回報給 apiserver。
+是 Worker Node 上一個很重要的 agent ( component )，負責監聽 apiserver 的一些事件，執行 Master Node 來的指令，例如透過 CRI 抓取 image 並建立 Pod、或是關閉 port 等，也會將此節點的狀態數據回報給 apiserver。
+
+主要的功能有幾個：
+* 監控 Node 及 Pod 的狀態
+* 掛載磁碟 ( Mount Volume )
+* 保存下載的 credential 等
+* 使用 Docker 的技術執行 Container
 
 #### kube-proxy
 監聽請求，負責將流量導向至對應的 Pod，是管理 k8s 中服務 ( service ) 網絡的組件。
